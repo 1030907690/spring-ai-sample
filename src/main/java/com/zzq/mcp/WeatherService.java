@@ -1,6 +1,8 @@
 package com.zzq.mcp;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class WeatherService {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Tool(description = "Get weather information by city name")
     public String getWeather(String cityName) {
+        logger.info("Get weather information by city name {}", cityName);
         return "30";
     }
 }
