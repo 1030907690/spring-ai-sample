@@ -1,6 +1,6 @@
 spring:
   application:
-    name: spring-doc-sample
+    name: spring-ai-sample
   ai:
     mcp:
       server:
