@@ -1,6 +1,17 @@
 spring:
   application:
     name: spring-doc-sample
+  ai:
+    mcp:
+      server:
+        protocol: STATELESS
+        name: mcp-sample
+        version: 1.0.0
+        type: SYNC
+        instructions: "提供天气查询等工具"
+        streamable-http:
+          mcp-endpoint: /api/mcp
+
 server:
   port: 8080
 
