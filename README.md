@@ -1,4 +1,4 @@
-# spring-doc-sample
+# spring-ai-sample
 
 # 参考
 - https://www.bilibili.com/video/BV17AWdzwEUQ
