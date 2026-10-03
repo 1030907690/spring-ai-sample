@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.zzq</groupId>
-	<artifactId>spring-doc-sample</artifactId>
+	<artifactId>spring-ai-sample</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-doc-sample</name>
-	<description>spring-doc-sample</description>
+	<name>spring-ai-sample</name>
+	<description>spring-ai-sample</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -28,7 +28,21 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<spring-ai.version>1.1.8</spring-ai.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-bom</artifactId>
+				<version>${spring-ai.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -52,6 +66,12 @@
 			<artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
 			<version>4.5.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
