@@ -15,6 +15,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChatService {
 
+    /**
+     * 检索相似度阈值：依据 2026-10-04 /search 实测分数分布，相关簇≈0.39~0.40，无关样本≈0.19，取两簇间偏低位置留改写型问题余量
+     */
+    private static final double SEARCH_SIMILARITY_THRESHOLD = 0.25;
+
+    /**
+     * 检索条数
+     */
+    private static final int SEARCH_TOP_K = 6;
+
     private final ChatClient chatClient;
 
     /**
@@ -24,9 +34,8 @@ public class ChatService {
 
     public ChatService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
         this.chatClient = chatClientBuilder.build();
-        // threshold 首版 0.0（不过滤）：先用 /search 实测 flash 嵌入模型的分数分布，再在相关/无关两簇之间回填
         this.ragAdvisor = QuestionAnswerAdvisor.builder(vectorStore)
-                .searchRequest(SearchRequest.builder().similarityThreshold(0.0).topK(6).build())
+                .searchRequest(SearchRequest.builder().similarityThreshold(SEARCH_SIMILARITY_THRESHOLD).topK(SEARCH_TOP_K).build())
                 .build();
     }
 
