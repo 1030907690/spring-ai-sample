@@ -25,7 +25,7 @@ public class ChatController {
     }
 
     @GetMapping("/chat")
-    @Operation(summary = "对话模型连通性/业务问答")
+    @Operation(summary = "纯对话（无RAG检索，含天气工具），/ask 的无RAG对照组")
     public String chat(@RequestParam(defaultValue = "用一句话介绍你自己") String q) {
         return chatService.chat(q);
     }
