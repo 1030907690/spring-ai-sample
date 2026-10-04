@@ -30,6 +30,7 @@ server:
 logging:
   level:
     com.zzq: debug
+    org.springframework.ai.chat.client.advisor: DEBUG
 
 springdoc:
   api-docs:
