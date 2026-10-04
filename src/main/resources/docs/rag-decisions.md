@@ -6,7 +6,7 @@ API Key 环境变量定版为 BAILIAN_API_KEY，不设默认值，未配置时�
 base-url 环境变量定版为 BAILIAN_BASE_URL，默认值兜底指向 https://dashscope.aliyuncs.com/compatible-mode。
 曾考虑过变量名 BAI_LIANOPEN_AI_COMPATIBLE，因不符合全大写加模块前缀的命名规范被否决。
 对话模型 code 为 qwen3.8-flash，嵌入模型 code 为 qwen3.7-text-embedding-flash。
-嵌入向量输出维度以实测为准，记录后锁定；变更维度意味着全量历史向量必须重建。
+嵌入向量输出维度为 1024（2026-10-04 /embed 实测），已锁定；迁移生产向量库时按 1024 维建表，变更维度意味着全量历史向量必须重建。
 
 ## MCP 架构决策
 Spring AI Chat 应用与 MCP Server 部署在同一个项目、同一个 JVM 内。
