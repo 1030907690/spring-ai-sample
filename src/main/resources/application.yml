@@ -2,6 +2,17 @@ spring:
   application:
     name: spring-ai-sample
   ai:
+    openai:
+      # 百炼 API Key，仅从环境变量注入，不设默认值：未配置时首次调用即失败，便于排查
+      api-key: ${BAILIAN_API_KEY}
+      # OpenAI 兼容模式 base-url，环境变量可覆盖，默认百炼兼容端点
+      base-url: ${BAILIAN_BASE_URL:https://dashscope.aliyuncs.com/compatible-mode}
+      chat:
+        options:
+          model: qwen3.8-flash
+      embedding:
+        options:
+          model: qwen3.7-text-embedding-flash
     mcp:
       server:
         protocol: STATELESS
