@@ -72,6 +72,36 @@
 			<artifactId>spring-ai-starter-mcp-server-webmvc</artifactId>
 		</dependency>
 
+		<!-- 1. 百炼 chat + embedding（OpenAI 兼容模式） -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-model-openai</artifactId>
+		</dependency>
+
+		<!-- 2. RAG：现成检索问答 Advisor（QuestionAnswerAdvisor） -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-advisors-vector-store</artifactId>
+		</dependency>
+
+		<!-- 3. RAG：自建流程零件（RetrievalAugmentationAdvisor/QueryTransformer/DocumentRetriever/Augmenter） -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-rag</artifactId>
+		</dependency>
+
+		<!-- 4. RAG：VectorStore 抽象与 SimpleVectorStore/ETL 拆件（代码直接使用，显式声明不靠传递） -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-vector-store</artifactId>
+		</dependency>
+
+		<!-- 5. RAG：文档解析（pdf/word/html/txt 通吃） -->
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-tika-document-reader</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
