@@ -52,6 +52,7 @@ public class RagController {
                     Map<String, Object> row = new LinkedHashMap<>();
                     row.put("score", doc.getScore());
                     row.put("source", doc.getMetadata().get("source"));
+                    row.put("section", doc.getMetadata().get("section"));
                     row.put("text", doc.getText());
                     return row;
                 })
