@@ -44,6 +44,8 @@ springdoc:
       paths-to-match: "/api/index/**"
     - group: "user"
       paths-to-match: "/api/user/**"
+    - group: "chat"
+      paths-to-match: "/api/chat/**"
 
 knife4j:
   # 增强
