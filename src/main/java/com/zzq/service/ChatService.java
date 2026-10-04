@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 public class ChatService {
 
     /**
-     * 检索相似度阈值：依据 2026-10-04 /search 实测分数分布，相关簇≈0.39~0.40，无关样本≈0.19，取两簇间偏低位置留改写型问题余量
+     * 检索相似度阈值：依据 2026-10-04 结构化切分后 /search 实测，相关簇≥0.387，无关簇≤0.265，取间隙中央偏下
      */
-    private static final double SEARCH_SIMILARITY_THRESHOLD = 0.25;
+    private static final double SEARCH_SIMILARITY_THRESHOLD = 0.30;
 
     /**
      * 检索条数

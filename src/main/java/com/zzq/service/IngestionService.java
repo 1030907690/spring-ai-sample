@@ -107,6 +107,11 @@ public class IngestionService {
         }
         String chunkText;
         if (heading.isEmpty()) {
+            // 仅含一级标题行、无实际内容的"概述"片丢弃：纯标题切片零信息量却对各路查询都得分不低，是检索噪声（2026-10-04 实测）
+            String content = body.replaceFirst("^#+ .*", "").trim();
+            if (content.isEmpty()) {
+                return;
+            }
             // 首个二级标题之前的前言（含一级标题行），保持原样
             chunkText = body;
         } else {
