@@ -25,8 +25,9 @@ public class ChatController {
     }
 
     @GetMapping("/chat")
-    @Operation(summary = "纯对话（含天气工具，不做 RAG 检索）；与 /ask 对比可观察 RAG 带来的差异")
-    public String chat(@RequestParam(defaultValue = "用一句话介绍你自己") String q) {
-        return chatService.chat(q);
+    @Operation(summary = "纯对话（含天气工具，不做 RAG 检索）；与 /ask 对比可观察 RAG 带来的差异。传 conversationId 则启用多轮记忆")
+    public String chat(@RequestParam(defaultValue = "用一句话介绍你自己") String q,
+                       @RequestParam(required = false) String conversationId) {
+        return chatService.chat(q, conversationId);
     }
 }

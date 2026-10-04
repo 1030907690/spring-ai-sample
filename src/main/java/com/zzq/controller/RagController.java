@@ -60,8 +60,16 @@ public class RagController {
     }
 
     @GetMapping("/ask")
-    @Operation(summary = "RAG 问答；/chat 为无 RAG 对照组")
-    public String ask(@RequestParam String q) {
-        return chatService.ask(q);
+    @Operation(summary = "RAG 问答（QuestionAnswerAdvisor，原问题直接检索）；/chat 为无 RAG 对照组。传 conversationId 则启用多轮记忆")
+    public String ask(@RequestParam String q,
+                      @RequestParam(required = false) String conversationId) {
+        return chatService.ask(q, conversationId);
+    }
+
+    @GetMapping("/ask2")
+    @Operation(summary = "RAG 问答（RetrievalAugmentationAdvisor，先改写查询再检索）；与 /ask 对比查询改写收益")
+    public String ask2(@RequestParam String q,
+                       @RequestParam(required = false) String conversationId) {
+        return chatService.askRewritten(q, conversationId);
     }
 }
