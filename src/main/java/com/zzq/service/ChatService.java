@@ -5,6 +5,7 @@ import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,8 +33,12 @@ public class ChatService {
      */
     private final Advisor ragAdvisor;
 
-    public ChatService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
-        this.chatClient = chatClientBuilder.build();
+    public ChatService(ChatClient.Builder chatClientBuilder, VectorStore vectorStore,
+                       ToolCallbackProvider weatherMcpTools) {
+        // 同 JVM 规范：直接注入 MCP Server 用的同一个 provider 走本地工具调用，不经 MCP 协议回环
+        this.chatClient = chatClientBuilder
+                .defaultToolCallbacks(weatherMcpTools)
+                .build();
         this.ragAdvisor = QuestionAnswerAdvisor.builder(vectorStore)
                 .searchRequest(SearchRequest.builder().similarityThreshold(SEARCH_SIMILARITY_THRESHOLD).topK(SEARCH_TOP_K).build())
                 .build();
