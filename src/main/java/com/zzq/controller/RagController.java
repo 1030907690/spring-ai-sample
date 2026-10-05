@@ -2,6 +2,7 @@ package com.zzq.controller;
 
 import com.zzq.service.ChatService;
 import com.zzq.service.IngestionService;
+import com.zzq.response.RagAnswerResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.ai.vectorstore.SearchRequest;
@@ -71,5 +72,12 @@ public class RagController {
     public String ask2(@RequestParam String q,
                        @RequestParam(required = false) String conversationId) {
         return chatService.askRewritten(q, conversationId);
+    }
+
+    @GetMapping("/ask/cited")
+    @Operation(summary = "RAG 问答 + 引用溯源：返回 {answer, citations[]}，citations 为本次真实召回并喂入上下文的文档（非模型自报）")
+    public RagAnswerResponse askCited(@RequestParam String q,
+                                      @RequestParam(required = false) String conversationId) {
+        return chatService.askCited(q, conversationId);
     }
 }

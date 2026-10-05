@@ -1,7 +1,10 @@
 package com.zzq.service;
 
 import com.zzq.advisor.TokenUsageAdvisor;
+import com.zzq.response.RagAnswerResponse;
+import com.zzq.response.RagAnswerResponse.Citation;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
@@ -16,8 +19,11 @@ import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 /**
  * @description: 对话服务，三条链路的业务入口：/chat 纯对话、/ask QuestionAnswerAdvisor 检索问答、
@@ -109,6 +115,25 @@ public class ChatService {
 
     public String askRewritten(String question, String conversationId) {
         return withMemory(chatClient.prompt().advisors(ragRewriteAdvisor), conversationId).user(question).call().content();
+    }
+
+    /**
+     * RAG 问答 + 引用溯源：一次调用同时拿答案与真实召回集。
+     * answer 取自模型响应；citations 取自 advisor context 的 qa_retrieved_documents（本次真正喂给上下文的文档），
+     * 属硬事实而非模型自报，可用于人工核查答案是否被检索内容支撑
+     */
+    @SuppressWarnings("unchecked")
+    public RagAnswerResponse askCited(String question, String conversationId) {
+        ChatClientResponse response = withMemory(chatClient.prompt().advisors(ragAdvisor), conversationId)
+                .user(question).call().chatClientResponse();
+        String answer = response.chatResponse().getResult().getOutput().getText();
+        Object retrieved = response.context().get(QuestionAnswerAdvisor.RETRIEVED_DOCUMENTS);
+        List<Document> documents = retrieved instanceof List<?> list ? (List<Document>) list : List.of();
+        List<Citation> citations = documents.stream()
+                .map(d -> new Citation((String) d.getMetadata().get("source"),
+                        (String) d.getMetadata().get("section"), d.getScore()))
+                .toList();
+        return new RagAnswerResponse(answer, citations);
     }
 
     /**
