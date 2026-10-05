@@ -17,6 +17,7 @@ import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 /**
  * @description: 对话服务，三条链路的业务入口：/chat 纯对话、/ask QuestionAnswerAdvisor 检索问答、
@@ -92,6 +93,14 @@ public class ChatService {
 
     public String chat(String question, String conversationId) {
         return withMemory(chatClient.prompt(), conversationId).user(question).call().content();
+    }
+
+    /**
+     * 流式对话：/chat 的流式版本，同链路（含天气工具、无 RAG），逐 token 返回。
+     * 价值：抹平 flash 模型 thinking 阶段的首字延迟（实测 completion 含约百个 reasoning token）
+     */
+    public Flux<String> chatStream(String question, String conversationId) {
+        return withMemory(chatClient.prompt(), conversationId).user(question).stream().content();
     }
 
     public String ask(String question, String conversationId) {

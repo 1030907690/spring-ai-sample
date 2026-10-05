@@ -3,10 +3,12 @@ package com.zzq.controller;
 import com.zzq.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 /**
  * @description: 对话入口，冒烟通过后即为正式业务接口
@@ -29,5 +31,12 @@ public class ChatController {
     public String chat(@RequestParam(defaultValue = "用一句话介绍你自己") String q,
                        @RequestParam(required = false) String conversationId) {
         return chatService.chat(q, conversationId);
+    }
+
+    @GetMapping(value = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE + ";charset=UTF-8")
+    @Operation(summary = "流式对话（SSE 逐 token 返回），/chat 的流式版本，降低首字延迟")
+    public Flux<String> chatStream(@RequestParam(defaultValue = "用一句话介绍你自己") String q,
+                                   @RequestParam(required = false) String conversationId) {
+        return chatService.chatStream(q, conversationId);
     }
 }
